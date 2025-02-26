@@ -266,7 +266,6 @@ const BreakoutGame = () => {
 
     const checkStageCompletion = () => {
       if (bricksRef.current.every((row) => row.every((brick) => brick.status === 0))) {
-        console.log("stage: " + stage + " level: " + LEVELS.length)
         if (stageRef.current <= LEVELS.length) {
           setIsLevelStarted(false);
           setStage((prevStage) => prevStage + 1); // Move to the next stage
