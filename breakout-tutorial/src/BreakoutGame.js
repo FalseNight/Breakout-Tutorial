@@ -2,10 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 
 const BreakoutGame = () => {
   // Game constants
+  const STAGE_WIDTH = Math.min(window.outerWidth * .8, 800);
+  const STAGE_HEIGHT = Math.min(window.outerHeight * .8, 600);
   const BRICK_ROWS = 5;
   const BRICK_COLUMNS = 7;
-  const BRICK_WIDTH = 75;
-  const BRICK_HEIGHT = 20;
+  const BRICK_WIDTH = STAGE_WIDTH/11;
+  const BRICK_HEIGHT = STAGE_HEIGHT/30;
   const PADDLE_WIDTH = 100;
   const PADDLE_HEIGHT = 10;
   const BALL_RADIUS = 10;
@@ -54,8 +56,8 @@ const BreakoutGame = () => {
   const [highScore, setHighScore] = useState(0);
 
   // Refs to track state
-  const ballsRef = useRef([{ x: 400, y: 300, dx: 4, dy: -4 }]);
-  const paddleXRef = useRef(400);
+  const ballsRef = useRef([{ x: STAGE_WIDTH/2, y: STAGE_HEIGHT/2, dx: 4, dy: -4 }]);
+  const paddleXRef = useRef(STAGE_WIDTH/2);
   const bricksRef = useRef([]);
   const powerupsRef = useRef([]);
   const paddleWidthRef = useRef(PADDLE_WIDTH);
@@ -121,7 +123,7 @@ const BreakoutGame = () => {
 
   // Reset ball and paddle position
   const resetBallAndPaddle = () => {
-    ballsRef.current = [{ x: 400, y: 300, dx: 4, dy: -4 }]; // Reset to one ball
+    ballsRef.current = [{ x: STAGE_WIDTH/2, y: STAGE_HEIGHT/2, dx: 4, dy: -4 }]; // Reset to one ball
     paddleXRef.current = (canvasRef.current.width - paddleWidthRef.current) / 2;
     ballSpeedRef.current = 4; // Reset ball speed
   };
@@ -133,16 +135,10 @@ const BreakoutGame = () => {
     setLives(3);
     setGameOver(false);
     setIsLevelStarted(false);
-    stageRef.current = 1;
-    scoreRef.current = 0;
-    livesRef.current = 3;
-    gameOverRef.current = false;
-    ballsRef.current = [{ x: 400, y: 300, dx: 4, dy: -4 }];
-    paddleXRef.current = 400;
     bricksRef.current = [];
     powerupsRef.current = [];
     paddleWidthRef.current = PADDLE_WIDTH;
-    ballSpeedRef.current = 4;
+    resetBallAndPaddle();
     initBricks();
   };
 
@@ -387,7 +383,7 @@ const BreakoutGame = () => {
     <div>
       <h1>Breakout - Stage {stage}.</h1>
       <p>Score: {score} | Lives: {lives} | High Score: {highScore}</p>
-      <canvas ref={canvasRef} width={800} height={600} style={{ border: "1px solid black", position: "relative" }} />
+      <canvas ref={canvasRef} width={STAGE_WIDTH} height={STAGE_HEIGHT} style={{ border: "1px solid black", position: "relative" }} />
       {gameOver && (
         <div>
           <p>Game Over! Refresh or click to play again.</p>
